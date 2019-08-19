@@ -3,12 +3,22 @@
 import uuid
 import models
 from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, DateTime, String
+
+
+Base = declarative_base()
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(),
+                        nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(),
+                        nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -26,10 +36,15 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+            if not self.id:
+                setattr(self, 'id', str(uuid.uuid4()))
+            if not self.created_at:
+                self.created_at = datetime.now()
+            if not self.updated_at:
+                self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            models.storage.new(self)
 
     def __str__(self):
         """returns a string
@@ -37,7 +52,7 @@ class BaseModel:
             returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, self.to_dict())
 
     def __repr__(self):
         """return a string representaion
@@ -48,7 +63,13 @@ class BaseModel:
         """updates the public instance attribute updated_at to current
         """
         self.updated_at = datetime.now()
+        models.storage.new(self)
         models.storage.save()
+
+    def delete(self):
+        """deletes the current instance from the storage
+        """
+        models.storage.delete(self)
 
     def to_dict(self):
         """creates dictionary of the class  and returns
@@ -59,4 +80,6 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in my_dict:
+            del my_dict['_sa_instance_state']
         return my_dict
