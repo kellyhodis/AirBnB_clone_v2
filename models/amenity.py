@@ -1,12 +1,19 @@
 #!/usr/bin/python3
-''' This module defines the Amenity class.
+"""This is the amenity class"""
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+from os import getenv
 
+
+class Amenity(BaseModel, Base):
+    """This is the class for Amenity
     Attributes:
-        Amenity - Subclass of BaseModel.
-'''
-from models.base_model import BaseModel
-
-
-class Amenity(BaseModel):
-    ''' Represent the amenities of an accommodation. '''
-    name = ''
+        name: input name
+    """
+    __tablename__ = "amenities"
+    name = Column(String(128), nullable=False)
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        from models.place import place_amenity
+        place_amenities = relationship("Place", secondary=place_amenity,
+                                       back_populates="amenities")
