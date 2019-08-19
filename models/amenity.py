@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-"""This is the amenity class"""
+''' This module defines the Amenity class.
+
+    Attributes:
+        Amenity - Subclass of BaseModel.
+'''
 from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """This is the class for Amenity
-    Attributes:
-        name: input name
-    """
-    name = ""
+    ''' Represent the amenities of an accommodation. '''
+    name = ''
