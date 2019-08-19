@@ -88,6 +88,11 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("all User")
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("create User id=\"12345\"")
+            self.consol.onecmd("show User 12345")
+            self.assertEqual(
+                "12345\n[User] (12345", f.getvalue()[:19])
 
     def test_show(self):
         """Test show command inpout"""
@@ -205,7 +210,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("User.destroy(12345)")
+            self.consol.onecmd("User.destroy(1234567)")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
 
@@ -216,7 +221,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("User.update(12345)")
+            self.consol.onecmd("User.update(12)")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
@@ -231,6 +236,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.update(" + my_id + ", name)")
             self.assertEqual(
                 "** value missing **\n", f.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
