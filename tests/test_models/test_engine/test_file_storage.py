@@ -4,6 +4,7 @@ import unittest
 import pep8
 import json
 import os
+import contextlib
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -72,18 +73,14 @@ class TestFileStorage(unittest.TestCase):
         path = os.path.join(Root, "file.json")
         with open(path, 'r') as f:
             lines = f.readlines()
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(path)
-        except:
-            pass
         self.storage.save()
         with open(path, 'r') as f:
             lines2 = f.readlines()
         self.assertEqual(lines, lines2)
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(path)
-        except:
-            pass
         with open(path, "w") as f:
             f.write("{}")
         with open(path, "r") as r:
