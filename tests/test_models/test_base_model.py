@@ -52,6 +52,12 @@ class TestBaseModel(unittest.TestCase):
         """test if the base is an type BaseModel"""
         self.assertTrue(isinstance(self.base, BaseModel))
 
+    def test_attrs_BaseModel(self):
+        """test if the base has id, created_at, and updated_at"""
+        self.assertTrue(hasattr(self.base, "id"))
+        self.assertTrue(hasattr(self.base, "created_at"))
+        self.assertTrue(hasattr(self.base, "updated_at"))
+
     def test_save_BaesModel(self):
         """test if the save works"""
         self.base.save()
