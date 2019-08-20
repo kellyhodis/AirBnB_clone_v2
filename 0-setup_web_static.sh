@@ -3,6 +3,7 @@
 
 sudo apt-get update
 sudo apt-get install -y nginx
+sudo service start nginx
 mkdir -p /data/web_static/releases
 mkdir -p /data/web_static/shared
 mkdir -p /data/web_static/releases/test
@@ -11,3 +12,4 @@ sudo rm -f /data/web_static/current
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
 sudo sed -i "0,/_;/s//_;\n\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current\/;\n\t}/" /etc/nginx/sites-enabled/default 
 sudo chown -R ubuntu:ubuntu /data/
+sudo service nginx restart
