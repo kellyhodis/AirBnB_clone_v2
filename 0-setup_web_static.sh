@@ -4,6 +4,8 @@
 sudo apt-get -y update
 sudo apt-get install -y nginx
 sudo service start nginx
+mkdir -p /data
+mkdir -p /data/web_static
 mkdir -p /data/web_static/releases
 mkdir -p /data/web_static/shared
 mkdir -p /data/web_static/releases/test
