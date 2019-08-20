@@ -7,6 +7,8 @@ from datetime import datetime
 
 
 env.hosts = ['35.229.123.177', '34.73.72.195']
+
+
 def do_pack():
     '''This is a function that generates a .tgz archive from
     web_static folder.
@@ -32,16 +34,15 @@ def do_deploy(archive_path):
         archive = archive_file[:-4]
         put(archive_path, '/tmp/')
         run('mkdir -p /data/web_static/releases/' + archive)
-        run('tar -xzf /tmp/' + archive_file + ' -C /data/web_static/releases/'
-            + archive + '/')
+        run('tar -xzf /tmp/' + archive_file + ' -C ' +
+            '/data/web_static/releases/' + archive + '/')
         run('rm /tmp/' + archive_file)
         run('mv /data/web_static/releases/' + archive + '/web_static/* ' +
             '/data/web_static/releases/' + archive + '/')
         run('rm -rf /data/web_static/releases/' + archive + '/web_static')
         run('rm -rf /data/web_static/current')
-        run('ln -s /data/web_static/releases/' + archive + 
+        run('ln -s /data/web_static/releases/' + archive +
             '/data/web_static_current')
         return True
     except:
-        return False 
-
+        return False
