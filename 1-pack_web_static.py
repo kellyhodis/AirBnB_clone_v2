@@ -21,4 +21,3 @@ def do_pack():
         return "versions/web_static_" + date_and_time + ".tzg"
     except:
         return None
-    
