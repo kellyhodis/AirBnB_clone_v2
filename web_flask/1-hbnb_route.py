@@ -19,7 +19,7 @@ def hello_HBNB():
 
 @app.route('/hbnb')
 def HBNB():
-    ''' Function to pring 'HBNB'
+    ''' Function to print 'HBNB'
     '''
     return 'HBNB'
 
