@@ -49,7 +49,7 @@ class DBStorage:
         """
         a_d = {}
         if cls:
-            objects = self.__session.query(cls).all()
+            objects = self.__session.query(eval(cls)).all()
         else:
             objects = self.__session.query(City).all()
             objects += self.__session.query(State).all()
