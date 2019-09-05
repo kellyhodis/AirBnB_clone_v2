@@ -6,19 +6,24 @@
 	<BODY>
 
 		{% if id %}
-			{% for state in states.values() %}
-				{% if state.id == id %}
-				<H1>State: {{ state.name }}</H1>
+			{% set key = 'State.' + id %}
+				{% if key not in states.keys() %}
+				<H1>Not found!</H1>
+				{% else %}
+					{% for state in states.values() %}
+						{% if state.id == id %}
+						<H1>State: {{ state.name }}</H1>
+						{% endif %}
+					{% endfor %}
+					<H3>Cities:</H3>
+					<UL>
+						{% for city in cities.values()|sort(attribute='name') %}
+							{% if city.state_id == id %}
+							<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+							{% endif %}
+						{% endfor %}
+					</UL>
 				{% endif %}
-			{% endfor %}
-		<H3>Cities:</H3>
-		<UL>
-			{% for city in cities.values()|sort(attribute='name') %}
-				{% if city.state_id == id %}
-				<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-				{% endif %}
-			{% endfor %}
-		</UL>
 		{% endif %}
 
 		{% if not id %}
